@@ -17,12 +17,31 @@ export type News = {
   content: string;
 };
 
-// TODO: Add other endpoints
-export const fetchNews = createAsyncThunk("news/fetchNews", () => {
-  return axios
-    .get(`https://newsapi.org/v2/everything?q=bitcoin&apiKey=${apiKey}`)
-    .then((response) => response.data.articles);
-});
+type Category =
+  | "business"
+  | "entertainment"
+  | "general"
+  | "health"
+  | "science"
+  | "sports"
+  | "technology";
+
+interface newsParameters {
+  searchString?: string;
+  category?: Category;
+  page?: number;
+}
+
+export const fetchNews = createAsyncThunk(
+  "news/fetchNews",
+  ({ page = 1, searchString, category }: newsParameters) => {
+    return axios
+      .get(
+        `https://newsapi.org/v2/everything?q=${searchString}&pageSize=15&page=${page}&apiKey=${apiKey}`
+      )
+      .then((response) => response.data.articles);
+  }
+);
 
 const newsInitialState: {
   loading: boolean;

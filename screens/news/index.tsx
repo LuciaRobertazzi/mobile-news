@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import { useAppSelector, useAppDispatch, fetchNews } from "../../store";
 
 export const NewsScreen = () => {
   const news = useAppSelector((state) => state.news);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(fetchNews());
+    dispatch(fetchNews({}));
   }, []);
 
   return (
