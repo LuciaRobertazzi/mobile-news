@@ -1,5 +1,6 @@
 import {
   NavigationContainer,
+  NavigatorScreenParams,
   createNavigationContainerRef,
 } from "@react-navigation/native";
 import {
@@ -8,13 +9,14 @@ import {
 } from "@react-navigation/native-stack";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NewsScreen, ArticleDetailsScreen } from "../screens";
+import { ArticleDetailsScreen } from "../screens";
 import { News } from "../store";
+import { HomeTabsNavParamList, HomeTabsNavigator } from "./home-tabs-navigator";
 
 export const navigationRef = createNavigationContainerRef();
 
 export type NavigatorParamList = {
-  news: undefined;
+  home: NavigatorScreenParams<HomeTabsNavParamList>;
   "article-details": {
     article: News;
     isFavorite: boolean;
@@ -31,9 +33,19 @@ const Stack = createNativeStackNavigator<NavigatorParamList>();
 
 const AppStack = () => {
   return (
-    <Stack.Navigator initialRouteName="news">
-      <Stack.Screen name="news" component={NewsScreen} />
-      <Stack.Screen name="article-details" component={ArticleDetailsScreen} />
+    <Stack.Navigator initialRouteName="home">
+      <Stack.Screen
+        name="home"
+        component={HomeTabsNavigator}
+        options={{ headerBackVisible: false }}
+      />
+      <Stack.Screen
+        name="article-details"
+        component={ArticleDetailsScreen}
+        options={{
+          title: "Article Details",
+        }}
+      />
     </Stack.Navigator>
   );
 };
