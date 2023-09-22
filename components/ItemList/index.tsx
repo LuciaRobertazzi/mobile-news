@@ -5,7 +5,7 @@ export type IListItem<T> = {
   id: string;
   data: T;
   title: string;
-  isFavourite: boolean;
+  isFavorite: boolean;
   description: string;
 };
 
@@ -35,7 +35,7 @@ export const ListItem = <T extends Record<string, any>>({
       <Flex flexDirection="row" maxW={80} justifyContent="flex-start">
         <Icon
           size="s"
-          color={item.isFavourite ? "red.600" : "gray.400"}
+          color={item.isFavorite ? "red.600" : "gray.400"}
           as={AntDesign}
           name="heart"
           marginRight={4}

@@ -32,7 +32,7 @@ export const NewsScreen = () => {
           title: art.title,
           description: art.description,
           id: art.url,
-          isFavourite: !!art.source,
+          isFavorite: !!art.source,
         }))}
         isLoading={news.loading}
         noContentText={news.error}
