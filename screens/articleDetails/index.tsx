@@ -22,7 +22,7 @@ export const ArticleDetailsScreen = (
     dispatch(addToFavorite(article));
   };
   return (
-    <Flex p={4} justifyContent={"space-between"} h={"100%"}>
+    <Flex p={4} justifyContent={"space-between"} flex={1}>
       <Flex>
         <Text bold fontSize={32} textBreakStrategy="balanced">
           {article.title}

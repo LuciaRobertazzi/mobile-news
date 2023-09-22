@@ -44,6 +44,11 @@ export const NewsScreen = () => {
           id: art.url,
           isFavorite: favoritesURL.includes(art.url),
         }))}
+        onRefresh={() => dispatch(fetchNews({}))}
+        isRefreshing={!!news.loading}
+        onEndReached={() =>
+          dispatch(fetchNews({ page: news.news.length / 15 + 1 }))
+        }
         isLoading={news.loading}
         noContentText={news.error}
       />
