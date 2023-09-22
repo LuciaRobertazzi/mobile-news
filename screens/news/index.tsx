@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import { View, Text, Button } from "react-native";
-import { useAppSelector, useAppDispatch, fetchNews } from "../../store";
+import { View } from "react-native";
+import { useAppSelector, useAppDispatch, fetchNews, News } from "../../store";
+import { List } from "../../components";
 
 export const NewsScreen = () => {
   const news = useAppSelector((state) => state.news);
@@ -11,7 +12,16 @@ export const NewsScreen = () => {
 
   return (
     <View>
-      <Text>News Screen</Text>
+      <List<News>
+        onPressItem={(id) => console.log(id)}
+        list={news.news.map((art) => ({
+          data: art,
+          title: art.title,
+          description: art.description,
+          id: art.url,
+          isFavourite: !!art.source,
+        }))}
+      />
     </View>
   );
 };

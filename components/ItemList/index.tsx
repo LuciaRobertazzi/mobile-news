@@ -1,19 +1,23 @@
 import { Flex, Icon, Pressable, Text } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 
-export type IListItem = {
+export type IListItem<T> = {
   id: string;
+  data: T;
   title: string;
   isFavourite: boolean;
   description: string;
 };
 
-interface ListItemProps {
-  item: IListItem;
+interface ListItemProps<T> {
+  item: IListItem<T>;
   onPressItem: (id: string) => void;
 }
 
-export const ListItem = ({ item, onPressItem }: ListItemProps) => {
+export const ListItem = <T extends Record<string, any>>({
+  item,
+  onPressItem,
+}: ListItemProps<T>) => {
   return (
     <Pressable
       onPress={() => onPressItem(item.id)}
@@ -28,14 +32,16 @@ export const ListItem = ({ item, onPressItem }: ListItemProps) => {
       shadow="1"
       mb={3}
     >
-      <Icon
-        size="s"
-        color={item.isFavourite ? "red.600" : "gray.400"}
-        as={AntDesign}
-        name="heart"
-      />
-      <Flex flexDirection="row" justifyContent="center">
-        <Flex justifyContent="center">
+      <Flex flexDirection="row" maxW={80} justifyContent="flex-start">
+        <Icon
+          size="s"
+          color={item.isFavourite ? "red.600" : "gray.400"}
+          as={AntDesign}
+          name="heart"
+          marginRight={4}
+          alignSelf={"center"}
+        />
+        <Flex>
           <Text>{item.title}</Text>
         </Flex>
       </Flex>
