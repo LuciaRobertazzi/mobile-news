@@ -37,7 +37,7 @@ export const fetchNews = createAsyncThunk(
   ({ page = 1, searchString, category }: newsParameters) => {
     return axios
       .get(
-        `https://newsapi.org/v2/everything?q=${searchString}&pageSize=15&page=${page}&apiKey=${apiKey}`
+        `https://newsapi.org/v2/everything?language=en&q=${searchString}&pageSize=15&page=${page}&apiKey=${apiKey}`
       )
       .then((response) => response.data.articles);
   }
