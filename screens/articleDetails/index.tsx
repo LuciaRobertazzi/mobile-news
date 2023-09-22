@@ -2,11 +2,15 @@ import { Linking } from "react-native";
 import { Flex, Text, Button, Pressable, Icon } from "native-base";
 import { RootStackNavProps } from "../../navigators";
 import { AntDesign } from "@expo/vector-icons";
+import { addToFavorite, useAppDispatch, useAppSelector } from "../../store";
 
 export const ArticleDetailsScreen = (
   props: RootStackNavProps<"article-details">
 ) => {
-  const { article, isFavorite } = props.route.params;
+  const { article } = props.route.params;
+  const dispatch = useAppDispatch();
+  const favoritesURL = useAppSelector((state) => state.favorites.urls);
+  const isFavorite = favoritesURL.includes(article.url);
   const handleReadMore = () => {
     Linking.canOpenURL(article.url).then((supported) => {
       if (supported) {
@@ -14,8 +18,11 @@ export const ArticleDetailsScreen = (
       }
     });
   };
+  const handleSelectFavorite = () => {
+    dispatch(addToFavorite(article));
+  };
   return (
-    <Flex p={4} justifyContent={"space-between"} h={"100%"}>
+    <Flex p={4} justifyContent={"space-between"} flex={1}>
       <Flex>
         <Text bold fontSize={32} textBreakStrategy="balanced">
           {article.title}
@@ -26,6 +33,7 @@ export const ArticleDetailsScreen = (
           marginTop={4}
           flexDirection={"row"}
           alignItems={"center"}
+          onPress={handleSelectFavorite}
         >
           <Icon
             size="xl"

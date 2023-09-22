@@ -4,6 +4,7 @@ import { ListItem, IListItem } from "../ItemList";
 interface ListProps<T> {
   list: IListItem<T>[];
   onPressItem: (id: string) => void;
+  onPressFavorite: (item: T) => void;
   noContentText?: string;
   onEndReached?: () => void;
   onRefresh?: () => void;
@@ -14,6 +15,7 @@ interface ListProps<T> {
 export const List = <T extends Record<string, any>>({
   list,
   onPressItem,
+  onPressFavorite,
   noContentText,
   onEndReached,
   onRefresh,
@@ -26,7 +28,11 @@ export const List = <T extends Record<string, any>>({
       minH={300}
       padding={2}
       renderItem={({ item }) => (
-        <ListItem item={item} onPressItem={onPressItem} />
+        <ListItem
+          item={item}
+          onPressItem={onPressItem}
+          onPressFavorite={onPressFavorite}
+        />
       )}
       keyExtractor={(item) => item.id}
       onEndReached={onEndReached}

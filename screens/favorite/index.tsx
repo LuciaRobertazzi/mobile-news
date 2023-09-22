@@ -11,10 +11,9 @@ import { List } from "../../components";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../navigators";
 
-export const NewsScreen = () => {
+export const FavoriteNewsScreen = () => {
   const navigation = useNavigation<NavigationProp<"home">>();
-  const news = useAppSelector((state) => state.news);
-  const favoritesURL = useAppSelector((state) => state.favorites.urls);
+  const favorites = useAppSelector((state) => state.favorites);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchNews({}));
@@ -24,7 +23,9 @@ export const NewsScreen = () => {
     dispatch(addToFavorite(item));
   };
   const handleSelectArticle = (id: string) => {
-    const articleSelected = news.news.find((article) => article.url === id);
+    const articleSelected = favorites.favorites.find(
+      (article) => article.url === id
+    );
     if (articleSelected) {
       navigation.navigate("article-details", {
         article: articleSelected,
@@ -37,20 +38,14 @@ export const NewsScreen = () => {
       <List<News>
         onPressItem={handleSelectArticle}
         onPressFavorite={handleSelectFavorite}
-        list={news.news.map((art) => ({
+        list={favorites.favorites.map((art) => ({
           data: art,
           title: art.title,
           description: art.description,
           id: art.url,
-          isFavorite: favoritesURL.includes(art.url),
+          isFavorite: !!art.source,
         }))}
-        onRefresh={() => dispatch(fetchNews({}))}
-        isRefreshing={!!news.loading}
-        onEndReached={() =>
-          dispatch(fetchNews({ page: news.news.length / 15 + 1 }))
-        }
-        isLoading={news.loading}
-        noContentText={news.error}
+        noContentText="You don't have any favorites yet!"
       />
     </View>
   );

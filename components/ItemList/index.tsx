@@ -12,11 +12,13 @@ export type IListItem<T> = {
 interface ListItemProps<T> {
   item: IListItem<T>;
   onPressItem: (id: string) => void;
+  onPressFavorite: (item: T) => void;
 }
 
 export const ListItem = <T extends Record<string, any>>({
   item,
   onPressItem,
+  onPressFavorite,
 }: ListItemProps<T>) => {
   return (
     <Pressable
@@ -33,19 +35,23 @@ export const ListItem = <T extends Record<string, any>>({
       mb={3}
     >
       <Flex flexDirection="row" maxW={80} justifyContent="flex-start">
-        <Icon
-          size="s"
-          color={item.isFavorite ? "red.600" : "gray.400"}
-          as={AntDesign}
-          name="heart"
-          marginRight={4}
+        <Pressable
+          onPress={() => onPressFavorite(item.data)}
           alignSelf={"center"}
-        />
+        >
+          <Icon
+            color={item.isFavorite ? "red.600" : "gray.400"}
+            as={AntDesign}
+            name="heart"
+            marginRight={4}
+          />
+        </Pressable>
+
         <Flex>
           <Text>{item.title}</Text>
         </Flex>
       </Flex>
-      <Icon size="s" as={AntDesign} name="right" />
+      <Icon as={AntDesign} name="right" />
     </Pressable>
   );
 };

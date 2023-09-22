@@ -17,29 +17,22 @@ export type News = {
   content: string;
 };
 
-type Category =
-  | "business"
-  | "entertainment"
-  | "general"
-  | "health"
-  | "science"
-  | "sports"
-  | "technology";
-
 interface newsParameters {
   searchString?: string;
-  category?: Category;
   page?: number;
 }
 
 export const fetchNews = createAsyncThunk(
   "news/fetchNews",
-  ({ page = 1, searchString, category }: newsParameters) => {
+  ({ page = 1, searchString }: newsParameters) => {
     return axios
       .get(
         `https://newsapi.org/v2/everything?language=en&q=${searchString}&pageSize=15&page=${page}&apiKey=${apiKey}`
       )
-      .then((response) => response.data.articles);
+      .then((response) => ({
+        articles: response.data.articles,
+        append: page !== 1,
+      }));
   }
 );
 
@@ -61,14 +54,19 @@ const newsSlice = createSlice({
     builder.addCase(fetchNews.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(
-      fetchNews.fulfilled,
-      (state, action: PayloadAction<News[]>) => {
-        state.loading = false;
-        state.news = action.payload;
-        state.error = "";
+    builder.addCase(fetchNews.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      if (!action.payload.append) {
+        state.news = action.payload.articles;
+      } else {
+        state.news = [...state.news, ...action.payload.articles].filter(
+          (obj, index, self) => {
+            return index === self.findIndex((el) => el.url === obj.url);
+          }
+        );
       }
-    );
+    });
     builder.addCase(fetchNews.rejected, (state, action) => {
       state.loading = false;
       state.news = [];
