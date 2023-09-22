@@ -19,7 +19,6 @@ export type NavigatorParamList = {
   home: NavigatorScreenParams<HomeTabsNavParamList>;
   "article-details": {
     article: News;
-    isFavorite: boolean;
   };
 };
 
